@@ -1,6 +1,6 @@
 # C-LiveProject-TheaterCMS
 
-# Create and Style Donation Page
+## Create and Style Donation Page
 
 Change the Donate View in the Home View folder.  This page should have several fields that let the user enter their information and donation amount.  The input fields should be in a form.  Take a look at the gif below to see how it should be styled.  Use Bootstrap's Grid Layout to create the layout of the page. The client wants an image displayed behind the title as well, and the font of the title should be Broadway. Add placeholders to every field a user can fill in. You do not need to implement the controller method for the form.
 
