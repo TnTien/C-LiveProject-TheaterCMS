@@ -56,7 +56,6 @@ Change the Donate View in the Home View folder.  This page should have several f
 ```
 
 ## Create entity model and CRUD Page
-***
 ### Model
 ```
     public enum prodPosition
