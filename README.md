@@ -4,7 +4,7 @@
 
 Change the Donate View in the Home View folder.  This page should have several fields that let the user enter their information and donation amount.  The input fields should be in a form.  Take a look at the gif below to see how it should be styled.  Use Bootstrap's Grid Layout to create the layout of the page. The client wants an image displayed behind the title as well, and the font of the title should be Broadway. Add placeholders to every field a user can fill in. You do not need to implement the controller method for the form.
 
-***
+```
     <div class="container" style="font-family: Broadway">
         <div class="jumbotron mb-0" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
                                        url('/Content/images/theater.jpg'); 
@@ -53,12 +53,12 @@ Change the Donate View in the Home View folder.  This page should have several f
             </form>
         </div>
     </div>
-***
+```
 
 ## Create entity model and CRUD Page
 ***
 ### Model
-
+```
     public enum prodPosition
     {
         Actor, Director, Technician, StageManager, Other
@@ -77,11 +77,9 @@ Change the Donate View in the Home View folder.  This page should have several f
         public int? DebutYearLeft { get; set; }
     }
     
-***
-
-***
+```
 ### Controller
-
+```
     public class CastMembersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -196,12 +194,11 @@ Change the Donate View in the Home View folder.  This page should have several f
             base.Dispose(disposing);
         }
     }
-***
-
+```
 ## Style Create & Edit Page
 ***
 ### CSS
-
+```
 .Prod-ProductionMember ::placeholder {
     color: var(--dark-color);
     opacity: 0.5;
@@ -256,8 +253,9 @@ Change the Donate View in the Home View folder.  This page should have several f
     font-size: 15px;
     border-radius: 8px;
 }
-***
+```
 ### Create Page
+```
 <body class="cms-bg-main-light Prod-ProductionMember">
     @using (Html.BeginForm())
     {
@@ -343,9 +341,9 @@ Change the Donate View in the Home View folder.  This page should have several f
         </div>
     }
 </body>
-***
+```
 ### Edit Page
-
+```
 <body class="cms-bg-main-light Prod-ProductionMember">
     @using (Html.BeginForm())
     {
@@ -433,6 +431,7 @@ Change the Donate View in the Home View folder.  This page should have several f
     </div>
     }
 </body>
+```
 
 
 
