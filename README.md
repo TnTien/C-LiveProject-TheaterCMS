@@ -57,7 +57,7 @@ Change the Donate View in the Home View folder.  This page should have several f
 
 ## Create entity model and CRUD Page
 ***
-# Model
+### Model
 
     public enum prodPosition
     {
@@ -78,8 +78,10 @@ Change the Donate View in the Home View folder.  This page should have several f
     }
     
 ***
-# Controller
+
 ***
+### Controller
+
     public class CastMembersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -195,5 +197,243 @@ Change the Donate View in the Home View folder.  This page should have several f
         }
     }
 ***
+
+## Style Create & Edit Page
+***
+### CSS
+
+.Prod-ProductionMember ::placeholder {
+    color: var(--dark-color);
+    opacity: 0.5;
+}
+
+.Prod-ProductionMember input[type="text"]:focus, .Prod-ProductionMember input[type="number"]:focus, .Prod-ProductionMember select:focus {
+    outline: 0 none;
+    border-color: var(--main-color--light);
+    box-shadow: 0 0 0 1px var(--main-color--light);
+}
+
+.Prod-ProductionMember-createBtn {
+    background-color: var(--main-color--light);
+    color: var(--dark-color);
+    padding: 5px 20px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+.Prod-ProductionMember-createBtn:hover {
+    background-color: var(--main-color);
+    color: var(--light-color);
+    border: 2px solid var(--main-color--light);
+    padding: 5px 20px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition-duration:0.2s;
+}
+
+.Prod-ProductionMember-backBtn {
+    opacity: 0.8;
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    padding: 5px 20px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition-duration: 0.2s;
+}
+
+.Prod-ProductionMember-backBtn:hover {
+    opacity: 1;
+    background-color: var(--dark-color);
+    border: 2px solid var(--main-color--light);
+    color: var(--main-color--light);
+    padding: 5px 20px;
+    text-align: center;
+    font-size: 15px;
+    border-radius: 8px;
+}
+***
+### Create Page
+<body class="cms-bg-main-light Prod-ProductionMember">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+
+        <div class="form-horizontal cms-bg-light cms-text-main rounded mt-5 p-3">
+            <h2 class="text-center pb-2">Create Production Member</h2>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Name" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.YearJoined, "Year Joined", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.YearJoined, new { htmlAttributes = new { @class = "form-control", placeholder = "Year Joined" } })
+                    @Html.ValidationMessageFor(model => model.YearJoined, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.MainRole, "Main Role", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.MainRole, htmlAttributes: new { @class = "form-control", placeholder = "Name" })
+                    @Html.ValidationMessageFor(model => model.MainRole, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Bio, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Bio, new { htmlAttributes = new { @class = "form-control", placeholder = "Bio" } })
+                    @Html.ValidationMessageFor(model => model.Bio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.CurrentMember, "Current Member", htmlAttributes: new { @class = "control-label col-md-2", placeholder = "Characteer" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.CurrentMember)
+                        @Html.ValidationMessageFor(model => model.CurrentMember, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Character, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Character, new { htmlAttributes = new { @class = "form-control", placeholder = "Character" } })
+                    @Html.ValidationMessageFor(model => model.Character, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.CastYearLeft, "Cast Year Left", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CastYearLeft, new { htmlAttributes = new { @class = "form-control", placeholder = "Cast Year Left" } })
+                    @Html.ValidationMessageFor(model => model.CastYearLeft, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.DebutYearLeft, "Debut Year Left", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DebutYearLeft, new { htmlAttributes = new { @class = "form-control", placeholder = "Debut Year Left" } })
+                    @Html.ValidationMessageFor(model => model.DebutYearLeft, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row text-center pt-3">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="Prod-ProductionMember-createBtn" />
+                    <input type="button" class="Prod-ProductionMember-backBtn ml-5" value="Back to list" onclick="location.href='@Url.Action("Index")'" />
+                </div>
+            </div>
+        </div>
+    }
+</body>
+***
+### Edit Page
+
+<body class="cms-bg-main-light Prod-ProductionMember">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal cms-bg-light cms-text-main rounded mt-5 p-3">
+        <h2 class="text-center pb-2 cms-t">Edit Production Member</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ProductionMemberId)
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.YearJoined,"Year Joined", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.YearJoined, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.YearJoined, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.MainRole,"Main Role", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.MainRole, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MainRole, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Bio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Bio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Bio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.CurrentMember, "Current Member", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.CurrentMember)
+                    @Html.ValidationMessageFor(model => model.CurrentMember, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Character, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Character, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Character, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.CastYearLeft, "Cast Year Left", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CastYearLeft, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CastYearLeft, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.DebutYearLeft, "Debut Year Left", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DebutYearLeft, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DebutYearLeft, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row text-center pt-3">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="Prod-ProductionMember-createBtn" />
+                <input type="button" class="Prod-ProductionMember-backBtn ml-5" value="Back to list" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+
+    </div>
+    }
+</body>
+
+
 
 
