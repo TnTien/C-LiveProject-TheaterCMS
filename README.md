@@ -432,6 +432,458 @@ Change the Donate View in the Home View folder.  This page should have several f
 </body>
 ```
 
+## Photo Storage & Retrieval
+
+### Controller
+```
+    public class ProductionMembersController : Controller
+    {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        // GET: Prod/ProductionMembers
+        public ActionResult Index()
+        {
+            return View(db.ProductionMembers.ToList());
+        }
+
+        // GET: Prod/ProductionMembers/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ProductionMember productionMember = db.ProductionMembers.Find(id);
+            if (productionMember == null)
+            {
+                return HttpNotFound();
+            }
+            return View(productionMember);
+        }
+
+        // GET: Prod/ProductionMembers/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Prod/ProductionMembers/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "ProductionMemberId,Name,YearJoined,MainRole,Bio,CurrentMember,Character,CastYearLeft,DebutYearLeft")] ProductionMember productionMember, HttpPostedFileBase imgFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (imgFile != null)
+                {
+                    db.ProductionMembers.Add(productionMember);
+                    productionMember.Photo = ImgtoByte(imgFile);
+                }
+                else
+                {
+                    db.ProductionMembers.Add(productionMember);
+                }
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(productionMember);
+        }
+
+        // GET: Prod/ProductionMembers/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ProductionMember productionMember = db.ProductionMembers.Find(id);
+            if (productionMember == null)
+            {
+                return HttpNotFound();
+            }
+            return View(productionMember);
+        }
+
+        // POST: Prod/ProductionMembers/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "ProductionMemberId,Name,YearJoined,MainRole,Bio,CurrentMember,Character,CastYearLeft,DebutYearLeft")] ProductionMember productionMember, HttpPostedFileBase imgFile)
+        {
+            if (ModelState.IsValid)
+            {
+                productionMember.Photo = ImgtoByte(imgFile);
+                db.Entry(productionMember).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(productionMember);
+        }
+
+        // GET: Prod/ProductionMembers/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ProductionMember productionMember = db.ProductionMembers.Find(id);
+            if (productionMember == null)
+            {
+                return HttpNotFound();
+            }
+            return View(productionMember);
+        }
+
+        // POST: Prod/ProductionMembers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            ProductionMember productionMember = db.ProductionMembers.Find(id);
+            db.ProductionMembers.Remove(productionMember);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // Retrieves uploaded img file and converts into byte[]
+        public byte[] ImgtoByte(HttpPostedFileBase imgFile)
+        {
+            byte[] bytes;
+            using (BinaryReader br = new BinaryReader(imgFile.InputStream))
+            {
+                bytes = br.ReadBytes(imgFile.ContentLength);
+            }
+            return bytes;
+        }
+
+        // Retrieves byte[] of ProductionMember from database
+        public byte[] ImgfrmDb(int id)
+        {
+            ProductionMember member = db.ProductionMembers.Find(id);
+            byte[] memberPhoto = member.Photo;
+            return memberPhoto;
+        }
+        // Retrieves img file from db and displays
+        public ActionResult DisplayImg(ProductionMember id)
+        {
+            ProductionMember member = db.ProductionMembers.Find(id.ProductionMemberId);
+                byte[] img = ImgfrmDb(member.ProductionMemberId);
+                if (img != null)
+                {
+                    return base.File(img, "image/png");
+                }
+                else return null;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+```
+### Edit Page
+```
+<body class="cms-bg-main-light Prod-ProductionMember">
+    @using (Html.BeginForm("Edit", "ProductionMembers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal cms-bg-light cms-text-main rounded mt-5 p-3">
+        <h2 class="text-center pb-2 cms-t">Edit Production Member</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ProductionMemberId)
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.YearJoined, "Year Joined", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.YearJoined, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.YearJoined, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.MainRole, "Main Role", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.MainRole, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MainRole, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Bio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Bio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Bio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.CurrentMember, "Current Member", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.CurrentMember)
+                    @Html.ValidationMessageFor(model => model.CurrentMember, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Character, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Character, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Character, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.CastYearLeft, "Cast Year Left", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CastYearLeft, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CastYearLeft, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.DebutYearLeft, "Debut Year Left", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DebutYearLeft, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DebutYearLeft, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @{
+                    if (Model.Photo == null)
+                    { 
+                        <p>No Photo</p>
+                        <input type="file" name="imgFile"/>       
+                    }
+                    else
+                    {
+                        <img class="mb-3" style=" position: relative; width: 200px; height: 200px; overflow: hidden; border-radius: 5%;" src="@Url.Action("DisplayImg","ProductionMembers",new { Model.ProductionMemberId })" />
+                        <div>
+                            <input type="file" name="imgFile" />
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="form-group row text-center pt-3">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="Prod-ProductionMember-createBtn" />
+                <input type="button" class="Prod-ProductionMember-backBtn ml-5" value="Back to list" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+
+    </div>
+    }
+</body>
+```
+
+### Create Page
+```
+<body class="cms-bg-main-light Prod-ProductionMember">
+
+    @using (Html.BeginForm("Create", "ProductionMembers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal cms-bg-light cms-text-main rounded mt-5 p-3">
+        <h2 class="text-center pb-2">Create Production Member</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Name" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.YearJoined, "Year Joined", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.YearJoined, new { htmlAttributes = new { @class = "form-control", placeholder = "Year Joined" } })
+                @Html.ValidationMessageFor(model => model.YearJoined, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.MainRole, "Main Role", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.MainRole, htmlAttributes: new { @class = "form-control", placeholder = "Name" })
+                @Html.ValidationMessageFor(model => model.MainRole, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Bio, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Bio, new { htmlAttributes = new { @class = "form-control", placeholder = "Bio" } })
+                @Html.ValidationMessageFor(model => model.Bio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.CurrentMember, "Current Member", htmlAttributes: new { @class = "control-label col-md-2", placeholder = "Character" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.CurrentMember)
+                    @Html.ValidationMessageFor(model => model.CurrentMember, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Character, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Character, new { htmlAttributes = new { @class = "form-control", placeholder = "Character" } })
+                @Html.ValidationMessageFor(model => model.Character, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.CastYearLeft, "Cast Year Left", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CastYearLeft, new { htmlAttributes = new { @class = "form-control", placeholder = "Cast Year Left" } })
+                @Html.ValidationMessageFor(model => model.CastYearLeft, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.DebutYearLeft, "Debut Year Left", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DebutYearLeft, new { htmlAttributes = new { @class = "form-control", placeholder = "Debut Year Left" } })
+                @Html.ValidationMessageFor(model => model.DebutYearLeft, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row">
+            @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="imgFile" />
+            </div>
+        </div>
+
+        <div class="form-group row text-center pt-3">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="Prod-ProductionMember-createBtn" />
+                <input type="button" class="Prod-ProductionMember-backBtn ml-5" value="Back to list" onclick="location.href='@Url.Action("Index")'" />
+            </div>
+        </div>
+    </div>
+    }
+</body>
+```
+### Index Page
+```
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.YearJoined)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MainRole)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentMember)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Character)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CastYearLeft)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DebutYearLeft)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Photo)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.YearJoined)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MainRole)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentMember)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Character)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CastYearLeft)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DebutYearLeft)
+        </td>
+        <td>
+            @{
+                if (item.Photo != null)
+                {
+                    <img class="mb-3" style=" position: relative; width: 50px; height: 50px; overflow: hidden; border-radius: 5%;" src="@Url.Action("DisplayImg","ProductionMembers",new { item.ProductionMemberId })" />
+                }
+                else
+                {
+                    <p>No photo</p>
+                }
+            }
+
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProductionMemberId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ProductionMemberId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProductionMemberId })
+        </td>
+    </tr>
+}
+
+</table>
+```
+
 
 
 
