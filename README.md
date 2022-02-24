@@ -1016,7 +1016,175 @@ Change the Donate View in the Home View folder.  This page should have several f
 
 </table>
 ```
+## ProductionMembers CRUD Page - Index Styling
+### Index Page
+```
+<div class="text-center m-3">
+    <h2 class="cms-text-light">Production Members</h2>
+    <button class="Prod-ProductionMember-createBtn text-center" type="button" onclick="location.href='@Url.Action("Create")'">Create</button>
+</div>
 
+<div class="container-fluid cms-bg-main-light text-center rounded Prod-ProductionMember-Index">
 
+    @foreach (var name in Model.GroupBy(x => x.ProductionTitle).Select(y => y.First()).ToList())
+    {
+        if (name.ProductionTitle == null)
+        {
+            <h2 class="hi CMS-text-bigger cms-text-dark">No Production</h2>
+        }
+        <h2 class="CMS-text-bigger cms-text-dark">@Html.DisplayFor(modelName => name.ProductionTitle)</h2>
+        <hr />
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                if (item.ProductionTitle == name.ProductionTitle)
+                {
+                    <div class="col-3">
+                        <div class="Prod-ProductionMember-IndexContainer card">
+                            <div class="Prod-ProductionMember-ImgHover text-center">
+                                <button class="Prod-ProductionMember-createBtn text-center mt-2" type="button" onclick="location.href='@Url.Action("Edit", "ProductionMembers", new {id = item.ProductionMemberId })'"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                                <button class="Prod-ProductionMember-backBtn text-center mt-2" type="button" onclick="location.href='@Url.Action("Delete", "ProductionMembers", new {id = item.ProductionMemberId })'"><i class="fa-solid fa-trash"></i> Delete</button>
+                            </div>
+                            <a href="@Url.Action("Details",new { id = item.ProductionMemberId })">
+                                <article class="text-left">
+                                    <h2>@Html.DisplayFor(modelItem => item.Name)</h2>
+                                    <h4>@Html.DisplayFor(modelItem => item.Character)</h4>
+                                </article>
+                                <img src="@Url.Action("DisplayImg", "ProductionMembers", new { item.ProductionMemberId })" class="Prod-ProductionMember-imgsize" alt="">
+                            </a>
+                        </div>
+
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
+```
+### CSS
+```
+.Prod-ProductionMember-IndexContainer {
+    background-color: var(--secondary-color);
+    padding: 0;
+    overflow: hidden;
+    max-width: 350px;
+    margin: 5px;
+    border-color: var(--light-color);
+    box-shadow: 0 0 0 1px var(--main-color--light);
+}
+
+.Prod-ProductionMember-IndexContainer article {
+    padding: 10%;
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.Prod-ProductionMember-IndexContainer h2 {
+    color: var(--light-color);
+    font-weight: 800;
+    font-size: 25px;
+    border-bottom: #fff solid 1px;
+}
+
+.Prod-ProductionMember-IndexContainer h4 {
+    font-weight: 300;
+    color: var(--light-color);
+    font-size: 16px;
+}
+
+.Prod-ProductionMember-IndexContainer img {
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+    -webkit-transition: all 4s ease;
+    -moz-transition: all 4s ease;
+    -o-transition: all 4s ease;
+    -ms-transition: all 4s ease;
+    transition: all 4s ease;
+}
+
+.Prod-ProductionMember-ImgHover {
+    background-color: var(--secondary-color);
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    bottom: 0;
+    z-index: 1;
+    opacity: 0;
+    transform: translate(0px, 60px);
+    -webkit-transform: translate(0px, 60px);
+    -moz-transform: translate(0px, 60px);
+    -o-transform: translate(0px, 60px);
+    -ms-transform: translate(0px, 60px);
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.Prod-ProductionMember-ImgHover span {
+    font-size: 40px;
+    color: var(--dark-color);
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    top: 13px;
+}
+
+/* ProductionMembers Index Page: Hover*/
+.Prod-ProductionMember-IndexContainer:hover {
+    cursor: pointer;
+}
+
+.Prod-ProductionMember-IndexContainer:hover img {
+    opacity: 0.5;
+    transform: scale(1.2);
+}
+
+.Prod-ProductionMember-IndexContainer:hover article {
+    transform: translate(2px, -69px);
+    -webkit-transform: translate(2px, -69px);
+    -moz-transform: translate(2px, -69px);
+    -o-transform: translate(2px, -69px);
+    -ms-transform: translate(2px, -69px);
+}
+
+.Prod-ProductionMember-IndexContainer:hover .Prod-ProductionMember-ImgHover {
+    transform: translate(0px, 0px);
+    -webkit-transform: translate(0px, 0px);
+    -moz-transform: translate(0px, 0px);
+    -o-transform: translate(0px, 0px);
+    -ms-transform: translate(0px, 0px);
+    opacity: 1;
+}
+.Prod-ProductionMember-Index {
+    border-color: var(--main-color);
+    box-shadow: 0 0 0 1px var(--main-color--light);
+    padding: 12px;
+    border-radius: .5rem;
+    box-shadow: 2px 2px 38px var(--main-color--light) inset;
+    border: 5px inset var(--main-color); 
+}
+```
+### Controller
+```
+        public ActionResult Index()
+        {
+            var productionTitle = db.ProductionMembers.OrderBy(x => x.ProductionTitle == null)
+                .ThenBy(x => x.ProductionTitle)
+                .ThenBy(x => x.Name == null)
+                .ThenBy(x => x.Name);
+            return View(productionTitle.ToList());
+        }
+```
 
 
