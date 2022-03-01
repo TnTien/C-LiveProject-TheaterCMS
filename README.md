@@ -1,10 +1,12 @@
 # C-LiveProject-TheaterCMS
 ## Introduction
 For two weeks I was working with a team to built an interactive website for managing the content and productions for a theater/acting company. The application is built using ASP.NET MVC and Entity Framework. I was tasked with styling the Donate Page and also creating and styling the CRUD Pages for Production Members. To keep track of the progress of each member, the Agile metholody is used. We had daily standups to talk about what we did the day before and what we are planning on working the day of and also if we have any roadblocks. At the end of the week we had a Code retrospective to talk about how well the project is going and what we could to improve or what we liked.
+(The images used are of characters from a video game)
 
 ## Create and Style Donation Page
 
 Using Bootstrap 4, I was able to create a form that collapses into a single column as the the size of the screen decreases. The client wanted to have an image behind the title and I was able to make happen with bootstrap's jumbotron.
+![11602 - Create and Style Donation Page](https://user-images.githubusercontent.com/16495500/156114673-da002ee0-8b83-453b-beba-f8f8ff018e0d.gif)
 
 ```
     <div class="container" style="font-family: Broadway">
@@ -257,6 +259,8 @@ These were the custom css that I made to style the pages. These were used to sty
 
 ### Create Page
 For the Create page, I made it so it was similar to the Donate Page earlier where I have two columns, one columns display the Name of the columns and the second with an input for the user to enter the data. As the size of the screen decreases, the form will collapse into one column. 
+![11647 - Production Member Create Page Styling](https://user-images.githubusercontent.com/16495500/156114625-f94f9b8b-5095-475e-90f2-dcd2627f4168.PNG)
+
 ```
 <body class="cms-bg-main-light Prod-ProductionMember">
 
@@ -362,6 +366,8 @@ For the Create page, I made it so it was similar to the Donate Page earlier wher
 ```
 ### Edit Page
 The Edit page was styled similar to the Create page. The one difference with the Edit page is that I had the page display an image if there were one. I added a feature to this page where the user would be able to remove the image but still remain on this page.
+![Edit Page](https://user-images.githubusercontent.com/16495500/156114695-613d176a-7a97-46ec-b33d-1e702361a652.gif)
+
 ```
 <body class="cms-bg-main-light Prod-ProductionMember">
     @using (Html.BeginForm("Edit", "ProductionMembers", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -615,6 +621,8 @@ I ran into some issues with the Edit page. When I went into the Edit page to cha
 
 ## Index Page Styling
 For the Index page. I had to change it so that it would display the Production Members based on the Production that they were in. Each member would be displayed as a card where if you click on the card you would get directed to the Details page. When you hover over the card, an overlay would appear with buttons to the Edit page and the Delete page while the image would slightly get darker. Using Razor Syntax, I first sorted the model by the ProductionTitle and only had the first displayed as a header for the Row that way there wouldn't be multiple rows of the same ProductionTitle. Next I displayed the Production Members under the Production Title that they were in. If they were not in any Production, they would be listed last.
+![Index Page](https://user-images.githubusercontent.com/16495500/156114928-593e67ce-05d7-4811-a18b-ecf8b21de56a.gif)
+
 ```
 <head>
     <script src="https://kit.fontawesome.com/634caf7d3f.js" crossorigin="anonymous"></script>
@@ -677,6 +685,7 @@ Null values of ProductionTitle would get sorted first, in order for me to have i
 ## Details & Delete Page Styling
 The last task was to style the Details and Delete Pages. I was given an overview of how I could style the page so I styled the pages based on it. For the information on the second box, I made it so that it had two columns that collapses into one when the screen size is smaller.
 ### Details
+![Details Page](https://user-images.githubusercontent.com/16495500/156114739-a2a5e7f6-980a-4ba5-83ba-6fd08604eea7.gif)
 ```
 <head>
     <script src="https://kit.fontawesome.com/634caf7d3f.js" crossorigin="anonymous"></script>
@@ -755,6 +764,8 @@ The last task was to style the Details and Delete Pages. I was given an overview
 </body>
 ```
 ### Delete
+![DeletePage](https://user-images.githubusercontent.com/16495500/156114904-093eb82b-180d-49dd-bdab-47fb6880a46d.PNG)
+
 ```
 <head>
     <script src="https://kit.fontawesome.com/634caf7d3f.js" crossorigin="anonymous"></script>
@@ -844,7 +855,3 @@ The last task was to style the Details and Delete Pages. I was given an overview
 ```
 ### Summary
 This was a fun two weeks where I was able to put together everthing that I have learned during my time with the boot camp. With a team working on a project, it could get hectic with everyone working on the code but with the use of version control, all the changes are tracked and one person is in charge of what changes gets pushed into the main branch. I learned the importance of keeping my branch up to date with the master branch so that there aren't any merge conflicts. I think the most important thing I learned from this project is the importance of debugging. There were times when I couldn't figure out what I needed to do, so I didn't know what I needed to search to help find an answer. When I used the debugger it helped me see what my code is doing and from there I was able to narrow down what I needed to find.
-
-
-
-
