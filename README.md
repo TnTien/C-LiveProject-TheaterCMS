@@ -1,6 +1,6 @@
 # C-LiveProject-TheaterCMS
 ## Introduction
-
+For two weeks I was working with a team to built an interactive website for managing the content and productions for a theater/acting company. The application is built using ASP.NET MVC and Entity Framework. I was tasked with styling the Donate Page and also creating and styling the CRUD Pages for Production Members. To keep track of the progress of each member, the Agile metholody is used. We had daily standups to talk about what we did the day before and what we are planning on working the day of and also if we have any roadblocks. At the end of the week we had a Code retrospective to talk about how well the project is going and what we could to improve or what we liked.
 
 ## Create and Style Donation Page
 
@@ -842,7 +842,8 @@ The last task was to style the Details and Delete Pages. I was given an overview
     </div>
 </body>
 ```
-
+### Summary
+This was a fun two weeks where I was able to put together everthing that I have learned during my time with the boot camp. With a team working on a project, it could get hectic with everyone working on the code but with the use of version control, all the changes are tracked and one person is in charge of what changes gets pushed into the main branch. I learned the importance of keeping my branch up to date with the master branch so that there aren't any merge conflicts. I think the most important thing I learned from this project is the importance of debugging. There were times when I couldn't figure out what I needed to do, so I didn't know what I needed to search to help find an answer. When I used the debugger it helped me see what my code is doing and from there I was able to narrow down what I needed to find.
 
 
 
