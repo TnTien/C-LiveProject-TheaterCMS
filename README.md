@@ -1,6 +1,6 @@
 # C-LiveProject-TheaterCMS
 ## Introduction
-For two weeks I was working with a team to built an interactive website for managing the content and productions for a theater/acting company. The application is built using ASP.NET MVC and Entity Framework. I was tasked with styling the Donate Page and also creating and styling the CRUD Pages for Production Members. To keep track of the progress of each member, the Agile metholody is used. We had daily standups to talk about what we did the day before and what we are planning on working the day of and also if we have any roadblocks. At the end of the week we had a Code retrospective to talk about how well the project is going and what we could to improve or what we liked.
+For two weeks I was working with a team to build an interactive website for managing the content and productions for a theater/acting company. The application is built using ASP.NET MVC and Entity Framework. I was tasked with styling the Donate Page and also creating and styling the CRUD Pages for Production Members. To keep track of the progress of each member, the Agile metholody is used. We had daily standups to talk about what we did the day before and what we are planning on working the day of and also if we have any roadblocks. At the end of the week we had a Code retrospective to talk about how well the project is going and what we could to improve or what we liked.
 (The images used are of characters from a video game)
 
 ## Create and Style Donation Page
@@ -259,8 +259,7 @@ These were the custom css that I made to style the pages. These were used to sty
 
 ### Create Page
 For the Create page, I made it so it was similar to the Donate Page earlier where I have two columns, one columns display the Name of the columns and the second with an input for the user to enter the data. As the size of the screen decreases, the form will collapse into one column. 
-![11647 - Production Member Create Page Styling](https://user-images.githubusercontent.com/16495500/156114625-f94f9b8b-5095-475e-90f2-dcd2627f4168.PNG)
-
+![CreatePage](https://user-images.githubusercontent.com/16495500/156265675-730db47b-05d7-4e99-b945-b207341334f3.gif)
 ```
 <body class="cms-bg-main-light Prod-ProductionMember">
 
